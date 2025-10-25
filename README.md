@@ -357,3 +357,4 @@ adb push $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/*/sysroot/usr/lib/arm-linux-
 adb shell /data/local/tmp/hello
 ```
 
+![Screenshot of linux terminal](img/swift-on-armv8l-android.jpg "Swift on android")
