@@ -1,28 +1,29 @@
-#### check Android architecture in Termux
+### check Android architecture in Termux
 
 ```bash
 uname -m
 ```
 
-Arch can be verified using adb
+### Arch can be verified using adb
 
 1. Enable Developer mode on Android
 2. Connect Android to computer via USB capabilities
 3. Approve access permission popup on Android
-4. Check if device is connected.
+4. Choose 'File Transfer' from Android notifications
+5. Check if device is connected.
 
 ```bash
 adb devices
 ```
-5. check Android architecture using adb
+6. check Android architecture using adb
 ```bash
 adb shell uname -m
 ```
 
-### Check supported SDK for archv8l (ARM 32 bit processor)
+### Check supported SDK for armv8l (ARM 32 bit processor)
 
 <details>
-  <summary>What is archv8l?</summary>
+  <summary>What is armv8l?</summary>
 
 | Part    | Meaning                  | Explanation                                                                                                                                                |
 | ------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -62,7 +63,7 @@ grep "\"arm" swift-sdk.json
     "armv7-unknown-linux-android36": {
 ```
 
-archv8l
+armv8l
 
 armv7-unknown-linux-android28
 
@@ -113,4 +114,73 @@ AArch64, also known as ARM64, is the 64-bit execution state of the ARM processor
 
 It was first introduced with ARMv8-A in 2011 and remains the foundation for ARMv9 processors used in modern smartphones, tablets, laptops, and servers.
 
+
+### Enable ADB via Wifi
+
+(Assumption: Developer mode is already enabled in Andoid)
+
+1. Connect android and computer via USB cable.
+2. Unlock Andoid and choose 'File Transfer' from android notifications.
+3. Check device status in Linux Terminal
+```bash
+adb devices
+```
+
+```bash
+❯ adb devices
+List of devices attached
+GMXXXNW400000G6KL        device
+```
+
+4. Enable TCP/IP mode
+```bash
+adb tcpip 5555
+```
+
+```bash
+❯ adb tcpip 5555
+restarting in TCP mode port: 5555
+
+```
+5. Connect both device in same network (Wifi)
+6. Get Android device local IP
+
+```bash
+adb shell ip route
+```
+
+```bash
+❯ adb shell ip route
+192.168.1.0/24 dev wlan0 proto kernel scope link src 192.168.1.3
+```
+7. Connect wirelessly
+```bash
+adb connect 192.168.1.3:5555
+```
+
+```bash
+❯ adb connect 192.168.1.3:5555
+connected to 192.168.1.3:5555
+```
+8. Verify device status
+```bash
+adb devices
+```
+
+```bash
+❯ adb devices
+List of devices attached
+GMXXXNW400000G6KL        device
+192.168.1.3:5555        device
+```
+
+9. Unplug the USB connector
+
+10. Disconnect wireless connection
+```bash
+adb disconnect 192.168.1.3:5555
+```
+
+
+### Install
 
