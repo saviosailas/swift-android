@@ -22,8 +22,11 @@ grep "\"arm" swift-sdk.json
 ```
 
 archv8l
+
 armv7-unknown-linux-android28
+
 armv7-unknown-linux-android..
+
 armv7-unknown-linux-android36
 
 
@@ -53,18 +56,21 @@ armv7-unknown-linux-android36
 8. IBM System/390 (s390/s390x) for mainframes
 
 
+| Architecture | Type | Notable Use Cases         | Example ISA      |
+|---------------|------|---------------------------|------------------|
+| x86 / AMD64   | CISC | PCs, servers              | Intel/AMD        |
+| ARM           | RISC | Mobile, IoT, embedded     | ARMv8, ARMv9     |
+| MIPS          | RISC | Routers, embedded devices | MIPS64           |
+| PowerPC       | RISC | Industrial, embedded      | PPC64            |
+| SPARC         | RISC | Servers, HPC              | SPARCv9          |
+| IBM s390/x    | CISC | Mainframes                | z/Architecture   |
 
-Architecture  |  Type  |  Notable Use Cases          |  Example ISA   
---------------+--------+-----------------------------+----------------
-x86 / AMD64   |  CISC  |  PCs, servers               |  Intel/AMD     
-ARM           |  RISC  |  Mobile, IoT, embedded      |  ARMv8, ARMv9  
-MIPS          |  RISC  |  Routers, embedded devices  |  MIPS64        
-PowerPC       |  RISC  |  Industrial, embedded       |  PPC64         
-SPARC         |  RISC  |  Servers, HPC               |  SPARCv9       
-IBM s390/x    |  CISC  |  Mainframes                 |  z/Architecture
+
 
 </details>
 
-AArch64, also known as ARM64, is the 64-bit execution state of the ARM processor architecture family. It was first introduced with ARMv8-A in 2011 and remains the foundation for ARMv9 processors used in modern smartphones, tablets, laptops, and servers.
+AArch64, also known as ARM64, is the 64-bit execution state of the ARM processor architecture family. 
+
+It was first introduced with ARMv8-A in 2011 and remains the foundation for ARMv9 processors used in modern smartphones, tablets, laptops, and servers.
 
 
