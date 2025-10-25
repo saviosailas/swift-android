@@ -1,3 +1,141 @@
+# Run binary build with Swift language on Linux machine
+
+
+### Install Swift using swiftly
+
+https://www.swift.org/install/linux/
+
+```bash
+curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz && \
+tar zxf swiftly-$(uname -m).tar.gz && \
+./swiftly init --quiet-shell-followup && \
+. "${SWIFTLY_HOME_DIR:-$HOME/.local/share/swiftly}/env.sh" && \
+hash -r
+```
+
+### Install tool chain
+
+```bash
+swiftly install main-snapshot-2025-10-16
+```
+### Update the global default toolchain
+```bash
+swiftly use main-snapshot-2025-10-16
+```
+
+```bash
+❯ swiftly install main-snapshot-2025-10-16
+Installing Swift main-snapshot-2025-10-16
+Installing package in user home directory...
+main-snapshot-2025-10-16 installed successfully!
+
+❯ swiftly use main-snapshot-2025-10-16
+The global default toolchain has been set to `main-snapshot-2025-10-16` (was 6.2.0)
+
+❯ swiftly run swift --version
+Apple Swift version 6.3-dev (LLVM 0d0246569621d5b, Swift 199240b3fe97eda)
+Target: arm64-apple-macosx15.0
+```
+
+### Install the Swift SDK for Android
+
+```bash
+swift sdk install https://download.swift.org/development/android-sdk/swift-DEVELOPMENT-SNAPSHOT-2025-10-16-a/swift-DEVELOPMENT-SNAPSHOT-2025-10-16-a_android-0.1.artifactbundle.tar.gz --checksum 451844c232cf1fa02c52431084ed3dc27a42d103635c6fa71bae8d66adba2500
+```
+
+### Check SDK installtion status ($ swift sdk list)
+```bash
+swiftly run swift sdk list
+```
+
+```bash
+❯ swiftly run swift sdk list
+swift-DEVELOPMENT-SNAPSHOT-2025-10-17-a-android-0.1
+```
+
+### Install and configure the Android NDK
+
+Swift SDK for Android depends on the Android NDK version 27d
+
+```bash
+mkdir ~/android-ndk
+cd ~/android-ndk
+curl -fSLO https://dl.google.com/android/repository/android-ndk-r27d-$(uname -s).zip
+unzip -q android-ndk-r27d-*.zip
+echo 'export ANDROID_NDK_HOME=$HOME/android-ndk/android-ndk-r27d' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Install Andoid command line tools
+
+Download latest command line tools from https://developer.android.com/studio
+
+(Look for "Command line tools only" section on webpage)
+
+```bash
+unzip commandlinetools-linux*.zip
+sudo mv cmdline-tools/ /opt/
+echo 'export PATH=$PATH:/opt/cmdline-tools/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Install OpenJDK
+```bash
+sudo apt install openjdk-17-jdk -y
+echo 'export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Install platform tools like adb, fastboot and etc.
+
+```bash
+mkdir $HOME/Android
+./sdkmanager --sdk_root=$HOME/Android "platform-tools"
+echo 'export PATH=$PATH:$HOME/Android/platform-tools' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Link NDK to the Swift SDK for Android
+
+```bash
+cd ~/.config/swiftpm/swift-sdks/swift-DEVELOPMENT-SNAPSHOT-*/swift-android/scripts
+./setup-android-sdk.sh
+```
+
+
+## ** Configured fully working cross-compilation toolchain for Android. **
+
+<br><br><br>
+
+# Create Hello world command line tool
+
+### Create swift package
+
+```bash
+mkdir ~/Work
+cd ~/Work
+mkdir hello
+cd hello
+
+# New swift package
+swiftly run swift package init --type executable
+
+```
+
+### Build package on host machine (linux)
+
+```bash
+swiftly run swift build
+```
+
+### Run the binary on host machine
+```bash
+.build/debug/hello
+```
+
+
+
+
 ### check Android architecture in Termux
 
 ```bash
@@ -19,6 +157,8 @@ adb devices
 ```bash
 adb shell uname -m
 ```
+
+<br><br><br>
 
 ### Check supported SDK for armv8l (ARM 32 bit processor)
 
@@ -114,6 +254,10 @@ AArch64, also known as ARM64, is the 64-bit execution state of the ARM processor
 
 It was first introduced with ARMv8-A in 2011 and remains the foundation for ARMv9 processors used in modern smartphones, tablets, laptops, and servers.
 
+
+
+
+<br><br><br>
 
 ### Enable ADB via Wifi
 
