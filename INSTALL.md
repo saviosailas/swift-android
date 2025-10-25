@@ -1,5 +1,4 @@
-# Run binary build with Swift language on Linux machine
-
+# Compile swift code on Linux and run it on Android device
 
 ### Install Swift using swiftly
 
@@ -134,15 +133,17 @@ swiftly run swift build
 ```
 
 
+## Now check Android device processor architecture for creating binary file
 
 
-### check Android architecture in Termux
+
+### 1. check Android architecture in Termux
 
 ```bash
 uname -m
 ```
 
-### Arch can be verified using adb
+### 2. Arch can be verified using adb
 
 1. Enable Developer mode on Android
 2. Connect Android to computer via USB capabilities
@@ -202,14 +203,6 @@ grep "\"arm" swift-sdk.json
     "armv7-unknown-linux-android35": {
     "armv7-unknown-linux-android36": {
 ```
-
-armv8l
-
-armv7-unknown-linux-android28
-
-armv7-unknown-linux-android..
-
-armv7-unknown-linux-android36
 
 
 <details>
@@ -326,5 +319,41 @@ adb disconnect 192.168.1.3:5555
 ```
 
 
-### Install
+## Next: Build and install binary on Android
+
+### Build for Android device architecture
+
+```bash
+swiftly run swift build --swift-sdk armv7-unknown-linux-android28 --static-swift-stdlib
+```
+
+Simulator - x86_64-unknown-linux-android28
+
+64 Bit Aarch64 - aarch64-unknown-linux-android28
+
+32 bit Arm processor - armv7-unknown-linux-android28
+
+### Check binary file type
+```bash
+file .build/armv7-unknown-linux-android29/debug/hello
+```
+
+```bash
+❯ file .build/armv7-unknown-linux-android29/debug/hello
+
+.build/armv7-unknown-linux-android29/debug/hello: ELF 32-bit LSB pie executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /system/bin/linker, BuildID[sha1]=cfc06ed8e6c1d27b550182d129d1b7e911caeb94, with debug_info, not stripped
+```
+
+
+### Copy binary and respective "libc++_shared.so" file to Android device
+
+```bash
+adb push .build/armv7-unknown-linux-android29/debug/hello /data/local/tmp
+adb push $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/*/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so /data/local/tmp
+```
+
+### Run binary in Android device
+```bash
+adb shell /data/local/tmp/hello
+```
 
